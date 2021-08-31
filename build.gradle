@@ -20,6 +20,7 @@ plugins {
 
     id 'jacoco'
 
+
 }
 
 repositories {
@@ -51,7 +52,6 @@ checkstyle {
     maxWarnings = 0
     maxErrors = 0
 }
-<<<<<<< HEAD
 
 jacoco {
     toolVersion = "0.8.7"
@@ -76,6 +76,7 @@ jacocoTestCoverageVerification {
             }
         }
     }
+
 }
-=======
->>>>>>> Setup project
+
+
