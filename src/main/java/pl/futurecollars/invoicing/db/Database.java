@@ -1,17 +1,18 @@
 package pl.futurecollars.invoicing.db;
 
 import java.util.List;
+import java.util.UUID;
 import pl.futurecollars.invoicing.model.Invoice;
 
 public interface Database {
 
     Invoice save(Invoice invoice);
 
-    Invoice getById(int id);
+    Invoice getById(UUID id);
 
     List<Invoice> getAll();
 
-    Invoice update(int id, Invoice updatedInvoice);
+    Invoice update(Invoice updatedInvoice);
 
-    void delete(int id);
+    void delete(UUID id);
 }

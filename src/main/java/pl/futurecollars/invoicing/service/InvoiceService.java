@@ -1,6 +1,7 @@
 package pl.futurecollars.invoicing.service;
 
 import java.util.List;
+import java.util.UUID;
 import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Invoice;
 
@@ -16,7 +17,7 @@ public class InvoiceService {
         return database.save(invoice);
     }
 
-    public Invoice searchById(int id) {
+    public Invoice searchById(UUID id) {
         return database.getById(id);
     }
 
@@ -24,11 +25,11 @@ public class InvoiceService {
         return database.getAll();
     }
 
-    public Invoice updateInvoice(int id, Invoice invoice) {
-        return database.update(id, invoice);
+    public Invoice updateInvoice(Invoice invoice) {
+        return database.update(invoice);
     }
 
-    public void deleteInvoice(int id) {
+    public void deleteInvoice(UUID id) {
         database.delete(id);
     }
 

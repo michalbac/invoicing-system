@@ -14,11 +14,6 @@
         </value>
       </option>
     </JavaCodeStyleSettings>
-    <codeStyleSettings language="Cookie">
-      <indentOptions>
-        <option name="USE_TAB_CHARACTER" value="false" />
-      </indentOptions>
-    </codeStyleSettings>
     <codeStyleSettings language="JAVA">
       <option name="RIGHT_MARGIN" value="150" />
       <option name="BLANK_LINES_BEFORE_PACKAGE" value="1" />

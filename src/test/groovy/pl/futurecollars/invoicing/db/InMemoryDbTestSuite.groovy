@@ -12,19 +12,21 @@ class InMemoryDbTestSuite extends Specification {
 
     private Database db
     private List<Invoice> invoices
+    UUID uuid1 = UUID.randomUUID()
+    UUID uuid2 = UUID.randomUUID()
 
     def setup() {
         db = new InMemoryDatabase();
-        Company company1 = new Company(1, "PL5201111333", "00-001 Warszawa, Długa 1")
-        Company company2 = new Company(2, "PL5201111333", "00-001 Warszawa, Prosta 7")
+        Company company1 = new Company(uuid1, "PL5201111333", "00-001 Warszawa, Długa 1")
+        Company company2 = new Company(uuid2, "PL5201111333", "00-001 Warszawa, Prosta 7")
         InvoiceEntry entry1 = new InvoiceEntry("bread", 2.0, 0.46, Vat.STANDARD)
         InvoiceEntry entry2 = new InvoiceEntry("milk", 3.0, 0.24, Vat.REDUCED)
         List<InvoiceEntry> entries1 = new ArrayList<InvoiceEntry>();
         entries1.add(entry1)
         List<InvoiceEntry> entries2 = new ArrayList<InvoiceEntry>();
         entries1.add(entry2)
-        Invoice invoice1 = new Invoice(1, LocalDate.now(), company1, company2, entries1)
-        Invoice invoice2 = new Invoice(2, LocalDate.now(), company2, company1, entries2)
+        Invoice invoice1 = new Invoice(uuid1, LocalDate.now(), company1, company2, entries1)
+        Invoice invoice2 = new Invoice(uuid2, LocalDate.now(), company2, company1, entries2)
         invoices = new ArrayList<>()
         invoices.add(invoice1)
         invoices.add(invoice2)
@@ -45,7 +47,7 @@ class InMemoryDbTestSuite extends Specification {
     def "find by id in db"() {
         when:
         db.save(invoices.get(0))
-        def Invoice foundInvoice = db.getById(1);
+        def Invoice foundInvoice = db.getById(uuid1);
 
         then:
         foundInvoice != null
@@ -59,7 +61,7 @@ class InMemoryDbTestSuite extends Specification {
         when:
         db.save(invoices.get(0))
         db.save(invoices.get(1))
-        db.delete(3)
+        db.delete(UUID.randomUUID())
 
         then:
         thrown(NoSuchElementException)
@@ -80,7 +82,7 @@ class InMemoryDbTestSuite extends Specification {
         when:
         db.save(invoices.get(0))
         db.save(invoices.get(1))
-        db.delete(1);
+        db.delete(uuid1);
 
         then:
         db.getAll().size() == 1
@@ -89,13 +91,14 @@ class InMemoryDbTestSuite extends Specification {
     def "update invoice in db"() {
         when:
         db.save(invoices.get(0))
-        Invoice updatedInvoice = db.update(1, invoices.get(1))
+        invoices.get(0).getEntries().remove(1)
+        Invoice updatedInvoice = db.update(invoices.get(0))
 
         then:
-        updatedInvoice.id == 1
-        updatedInvoice.date == invoices.get(1).date
-        updatedInvoice.entries == invoices.get(1).entries
-        updatedInvoice.purchaser == invoices.get(1).purchaser
-        updatedInvoice.vendor == invoices.get(1).vendor
+        updatedInvoice.id == (uuid1)
+        updatedInvoice.date == invoices.get(0).date
+        updatedInvoice.entries.size() == 1
+        updatedInvoice.purchaser == invoices.get(0).purchaser
+        updatedInvoice.vendor == invoices.get(0).vendor
     }
 }
