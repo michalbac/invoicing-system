@@ -9,7 +9,7 @@ public class InvoiceService {
 
     Database database;
 
-    InvoiceService(Database database) {
+    public InvoiceService(Database database) {
         this.database = database;
     }
 

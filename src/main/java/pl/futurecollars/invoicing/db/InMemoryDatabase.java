@@ -36,21 +36,14 @@ public class InMemoryDatabase implements Database {
 
     @Override
     public Invoice update(Invoice updatedInvoice) {
-        Invoice invoice = invoices.get(updatedInvoice.getId());
-        invoice.setDate(updatedInvoice.getDate());
-        invoice.setEntries(updatedInvoice.getEntries());
-        invoice.setVendor(updatedInvoice.getVendor());
-        invoice.setPurchaser(updatedInvoice.getPurchaser());
+        Invoice invoice = invoices.put(updatedInvoice.getId(), updatedInvoice);
         return invoice;
     }
 
     @Override
-    public void delete(UUID id) throws NoSuchElementException {
+    public void delete(UUID id) {
         if (invoices.containsKey(id)) {
             invoices.remove(id);
-        } else {
-            throw new NoSuchElementException();
         }
-
     }
 }
