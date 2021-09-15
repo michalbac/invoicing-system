@@ -5,5 +5,4 @@ class InMemoryDbTestSuite extends DatabaseTestSuite{
     def setup(){
         db = new InMemoryDatabase();
     }
-
 }
