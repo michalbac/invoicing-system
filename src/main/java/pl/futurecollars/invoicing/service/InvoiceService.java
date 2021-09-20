@@ -2,9 +2,11 @@ package pl.futurecollars.invoicing.service;
 
 import java.util.List;
 import java.util.UUID;
+import org.springframework.stereotype.Service;
 import pl.futurecollars.invoicing.db.Database;
 import pl.futurecollars.invoicing.model.Invoice;
 
+@Service
 public class InvoiceService {
 
     Database database;
