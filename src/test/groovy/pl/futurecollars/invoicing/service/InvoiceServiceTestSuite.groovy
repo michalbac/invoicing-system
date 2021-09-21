@@ -6,66 +6,71 @@ import pl.futurecollars.invoicing.model.Company
 import pl.futurecollars.invoicing.model.Invoice
 import pl.futurecollars.invoicing.model.InvoiceEntry
 import pl.futurecollars.invoicing.model.Vat
+import spock.lang.Shared
 import spock.lang.Specification
 
 import java.time.LocalDate
 
 class InvoiceServiceTestSuite extends Specification {
 
-    private Database db
+    def Database db
     private InvoiceService service
-    private List<Invoice> invoices
-    UUID uuid1 = UUID.randomUUID()
-    UUID uuid2 = UUID.randomUUID()
+    @Shared
+    Company company1 = new Company(UUID.randomUUID(), "PL5201111333", "00-001 Warszawa, Francuska 1")
+    @Shared
+    Company company2 = new Company(UUID.randomUUID(), "PL5201111333", "00-001 Warszawa, Prosta 7")
+    @Shared
+    InvoiceEntry entry1 = new InvoiceEntry("bread", 2.0, 0.46, Vat.STANDARD)
+    @Shared
+    InvoiceEntry entry2 = new InvoiceEntry("milk", 3.0, 0.24, Vat.REDUCED)
+    @Shared
+    List<InvoiceEntry> entries1 = new ArrayList<InvoiceEntry>(Arrays.asList(entry1, entry2))
+    @Shared
+    List<InvoiceEntry> entries2 = new ArrayList<InvoiceEntry>(Arrays.asList(entry1))
+    @Shared
+    Invoice invoice1 = new Invoice(LocalDate.now(), company1, company2, entries1)
+    @Shared
+    Invoice invoice2 = new Invoice(LocalDate.now(), company2, company1, entries2)
+    @Shared
+    UUID uuid1 = invoice1.getId()
+    @Shared
+    UUID uuid2 = invoice2.getId()
 
-    def setup() {
+    def setup(){
         db = new InMemoryDatabase();
         service = new InvoiceService(db);
-        Company company1 = new Company(uuid1, "PL5201111333", "00-001 Warszawa, Długa 1")
-        Company company2 = new Company(uuid2, "PL5201111333", "00-001 Warszawa, Prosta 7")
-        InvoiceEntry entry1 = new InvoiceEntry("bread", 2.0, 0.46, Vat.STANDARD)
-        InvoiceEntry entry2 = new InvoiceEntry("milk", 3.0, 0.24, Vat.REDUCED)
-        List<InvoiceEntry> entries1 = new ArrayList<InvoiceEntry>();
-        entries1.add(entry1)
-        List<InvoiceEntry> entries2 = new ArrayList<InvoiceEntry>();
-        entries1.add(entry2)
-        Invoice invoice1 = new Invoice(uuid1, LocalDate.now(), company1, company2, entries1)
-        Invoice invoice2 = new Invoice(uuid2, LocalDate.now(), company2, company1, entries2)
-        invoices = new ArrayList<>()
-        invoices.add(invoice1)
-        invoices.add(invoice2)
     }
 
     def "add invoice"() {
         when:
-        def Invoice savedInvoice = service.save(invoices.get(0))
+        def Invoice savedInvoice = service.save(invoice1)
 
         then:
         savedInvoice != null
-        savedInvoice.date == invoices.get(0).date
-        savedInvoice.entries == invoices.get(0).entries
-        savedInvoice.purchaser == invoices.get(0).purchaser
-        savedInvoice.vendor == invoices.get(0).vendor
+        savedInvoice.date == invoice1.getDate()
+        savedInvoice.entries == invoice1.getEntries()
+        savedInvoice.purchaser == invoice1.getPurchaser()
+        savedInvoice.vendor == invoice1.getVendor()
     }
 
     def "find invoice by id"() {
         when:
-        service.save(invoices.get(0))
-        service.save(invoices.get(1))
+        service.save(invoice1)
+        service.save(invoice2)
         Invoice foundInvoice = service.searchById(uuid1)
 
         then:
         foundInvoice != null
-        foundInvoice.date == invoices.get(0).date
-        foundInvoice.entries == invoices.get(0).entries
-        foundInvoice.purchaser == invoices.get(0).purchaser
-        foundInvoice.vendor == invoices.get(0).vendor
+        foundInvoice.date == invoice1.getDate()
+        foundInvoice.entries == invoice1.getEntries()
+        foundInvoice.purchaser == invoice1.getPurchaser()
+        foundInvoice.vendor == invoice1.getVendor()
     }
 
     def "find not existing invoice"() {
         when:
-        service.save(invoices.get(0))
-        service.save(invoices.get(1))
+        service.save(invoice1)
+        service.save(invoice2)
         service.searchById(UUID.randomUUID())
 
         then:
@@ -74,8 +79,8 @@ class InvoiceServiceTestSuite extends Specification {
 
     def "find all invoices"() {
         when:
-        service.save(invoices.get(0))
-        service.save(invoices.get(1))
+        service.save(invoice1)
+        service.save(invoice2)
         List<Invoice> foundInvoicesList = service.getAllInvoices()
 
         then:
@@ -84,8 +89,8 @@ class InvoiceServiceTestSuite extends Specification {
 
     def "delete invoice"() {
         when:
-        service.save(invoices.get(0))
-        service.save(invoices.get(1))
+        service.save(invoice1)
+        service.save(invoice2)
         service.deleteInvoice(uuid1)
 
         then:
@@ -94,15 +99,15 @@ class InvoiceServiceTestSuite extends Specification {
 
     def "update invoice"() {
         when:
-        service.save(invoices.get(0))
-        invoices.get(0).getEntries().remove(1)
-        Invoice updatedInvoice = service.updateInvoice(invoices.get(0))
+        service.save(invoice1)
+        invoice1.getEntries().remove(1)
+        Invoice updatedInvoice = service.updateInvoice(invoice1)
 
         then:
         updatedInvoice.id == uuid1
-        updatedInvoice.date == invoices.get(0).date
+        updatedInvoice.date == invoice1.getDate()
         updatedInvoice.entries.size() == 1
-        updatedInvoice.purchaser == invoices.get(0).purchaser
-        updatedInvoice.vendor == invoices.get(0).vendor
+        updatedInvoice.purchaser == invoice1.getPurchaser()
+        updatedInvoice.vendor == invoice1.getVendor()
     }
 }

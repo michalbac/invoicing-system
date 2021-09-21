@@ -8,10 +8,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.utils.FileService;
 import pl.futurecollars.invoicing.utils.JsonService;
 
+@Repository
 public class FileBasedDatabase implements Database {
 
     private final FileService fileService;

@@ -7,8 +7,12 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import org.springframework.context.annotation.Primary;
+import org.springframework.stereotype.Repository;
 import pl.futurecollars.invoicing.model.Invoice;
 
+@Repository
+@Primary
 public class InMemoryDatabase implements Database {
 
     private Map<UUID, Invoice> invoices = new HashMap<>();
@@ -36,8 +40,7 @@ public class InMemoryDatabase implements Database {
 
     @Override
     public Invoice update(Invoice updatedInvoice) {
-        Invoice invoice = invoices.put(updatedInvoice.getId(), updatedInvoice);
-        return invoice;
+        return invoices.put(updatedInvoice.getId(), updatedInvoice);
     }
 
     @Override

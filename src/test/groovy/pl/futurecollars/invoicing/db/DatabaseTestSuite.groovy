@@ -14,17 +14,25 @@ abstract class DatabaseTestSuite extends Specification {
     @Shared
     def Database db
     @Shared
-    UUID uuid1 = UUID.randomUUID()
+    Company company1 = new Company(UUID.randomUUID(), "PL5201111333", "00-001 Warszawa, Francuska 1")
     @Shared
-    UUID uuid2 = UUID.randomUUID()
-    Company company1 = new Company(uuid1, "PL5201111333", "00-001 Warszawa, Francuska 1")
-    Company company2 = new Company(uuid2, "PL5201111333", "00-001 Warszawa, Prosta 7")
+    Company company2 = new Company(UUID.randomUUID(), "PL5201111333", "00-001 Warszawa, Prosta 7")
+    @Shared
     InvoiceEntry entry1 = new InvoiceEntry("bread", 2.0, 0.46, Vat.STANDARD)
+    @Shared
     InvoiceEntry entry2 = new InvoiceEntry("milk", 3.0, 0.24, Vat.REDUCED)
-    List<InvoiceEntry> entries1 = new ArrayList<InvoiceEntry>(Arrays.asList(entry1,entry2))
+    @Shared
+    List<InvoiceEntry> entries1 = new ArrayList<InvoiceEntry>(Arrays.asList(entry1, entry2))
+    @Shared
     List<InvoiceEntry> entries2 = new ArrayList<InvoiceEntry>(Arrays.asList(entry1))
-    Invoice invoice1 = new Invoice(uuid1, LocalDate.now(), company1, company2,entries1)
-    Invoice invoice2 = new Invoice(uuid2, LocalDate.now(), company2, company1, entries2)
+    @Shared
+    Invoice invoice1 = new Invoice(LocalDate.now(), company1, company2, entries1)
+    @Shared
+    Invoice invoice2 = new Invoice(LocalDate.now(), company2, company1, entries2)
+    @Shared
+    UUID uuid1 = invoice1.getId()
+    @Shared
+    UUID uuid2 = invoice2.getId()
 
 
     def "add invoice to the db"() {
