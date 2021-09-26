@@ -8,9 +8,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.Getter;
+import org.springframework.stereotype.Service;
 import pl.futurecollars.invoicing.config.FilePathConfig;
 
 @Getter
+@Service
 public class FileService {
 
     private String path = FilePathConfig.JSON_INVOICES_FILE_PATH;

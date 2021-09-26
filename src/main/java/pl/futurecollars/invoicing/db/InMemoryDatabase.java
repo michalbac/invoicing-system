@@ -45,8 +45,14 @@ public class InMemoryDatabase implements Database {
 
     @Override
     public void delete(UUID id) {
+        invoices.remove(id);
+    }
+
+    @Override
+    public boolean checkIfInvoiceExist(UUID id) {
         if (invoices.containsKey(id)) {
-            invoices.remove(id);
+            return true;
         }
+        return false;
     }
 }
