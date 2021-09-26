@@ -79,7 +79,7 @@ class InvoiceServiceTestSuite extends Specification {
         when:
         service.save(TestHelpers.invoice1)
         TestHelpers.invoice1.getEntries().remove(1)
-        TestHelpers.invoice1.setDate(new LocalDate(2021, 8,10))
+        TestHelpers.invoice1.setDate(new LocalDate(2021, 8, 10))
         Invoice updatedInvoice = service.updateInvoice(TestHelpers.invoice1)
 
         then:
