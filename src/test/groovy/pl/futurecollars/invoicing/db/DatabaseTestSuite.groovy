@@ -11,7 +11,6 @@ abstract class DatabaseTestSuite extends Specification {
     @Shared
     def Database db
 
-
     def "add invoice to the db"() {
         when:
         Invoice savedInvoice = db.save(TestHelpers.invoice1)

@@ -29,6 +29,7 @@ class InvoiceServiceTestSuite extends Specification {
         savedInvoice.entries == TestHelpers.invoice1.getEntries()
         savedInvoice.purchaser == TestHelpers.invoice1.getPurchaser()
         savedInvoice.vendor == TestHelpers.invoice1.getVendor()
+
     }
 
     def "find invoice by id"() {
@@ -77,6 +78,7 @@ class InvoiceServiceTestSuite extends Specification {
 
     def "update invoice"() {
         when:
+
         service.save(TestHelpers.invoice1)
         TestHelpers.invoice1.getEntries().remove(1)
         TestHelpers.invoice1.setDate(new LocalDate(2021, 8, 10))
