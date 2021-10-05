@@ -73,9 +73,7 @@ public class FileBasedDatabase implements Database {
 
     @Override
     public void delete(UUID id) {
-        if (checkIfInvoiceExist(id)) {
-            fileService.deleteLine(id.toString());
-        }
+        fileService.deleteLine(id.toString());
     }
 
     public boolean checkIfInvoiceExist(UUID id) {

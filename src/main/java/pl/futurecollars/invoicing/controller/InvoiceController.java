@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
+import pl.futurecollars.invoicing.exceptions.InvoiceNotFoundException;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.service.InvoiceService;
 
@@ -31,7 +32,7 @@ public class InvoiceController {
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @ResponseStatus(HttpStatus.CREATED)
     public Invoice addInvoice(@RequestBody Invoice invoice) {
         try {
             return invoiceService.save(invoice);
@@ -44,7 +45,8 @@ public class InvoiceController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public Invoice updateInvoice(@RequestBody Invoice invoice) {
         try {
-            return invoiceService.updateInvoice(invoice);
+            invoiceService.updateInvoice(invoice);
+            return invoiceService.searchById(invoice.getId());
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Provide correct invoice", e);
         }
@@ -55,7 +57,7 @@ public class InvoiceController {
     public void deleteInvoice(@PathVariable UUID id) {
         try {
             invoiceService.deleteInvoice(id);
-        } catch (Exception e) {
+        } catch (InvoiceNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Provide correct invoice id", e);
         }
     }

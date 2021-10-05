@@ -15,4 +15,6 @@ public interface Database {
     Invoice update(Invoice updatedInvoice);
 
     void delete(UUID id);
+
+    public boolean checkIfInvoiceExist(UUID id);
 }
