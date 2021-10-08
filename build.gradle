@@ -22,6 +22,7 @@ buildscript{
         springFoxUiVersion = '3.0.0'
     }
 }
+
 plugins {
     // Apply the java plugin to add support for Java
     id 'java'

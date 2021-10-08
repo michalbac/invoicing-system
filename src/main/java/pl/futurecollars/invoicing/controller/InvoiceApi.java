@@ -18,6 +18,7 @@ import pl.futurecollars.invoicing.model.Invoice;
 @RequestMapping(path = "/api")
 @Api(tags = {"invoice-controller"})
 public interface InvoiceApi {
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     @ApiOperation(value = "List all invoices from system")
