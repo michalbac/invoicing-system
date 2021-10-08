@@ -1,18 +1,15 @@
 package pl.futurecollars.invoicing.db;
 
 import java.util.HashMap;
-
 import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Repository;
+import lombok.extern.slf4j.Slf4j;
 import pl.futurecollars.invoicing.model.Invoice;
 
-@Repository
-@Primary
+@Slf4j
 public class InMemoryDatabase implements Database {
 
     private Map<UUID, Invoice> invoices = new HashMap<>();

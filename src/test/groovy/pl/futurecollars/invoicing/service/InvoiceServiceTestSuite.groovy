@@ -8,7 +8,6 @@ import spock.lang.Specification
 
 import java.time.LocalDate
 
-
 class InvoiceServiceTestSuite extends Specification {
 
     def Database db
