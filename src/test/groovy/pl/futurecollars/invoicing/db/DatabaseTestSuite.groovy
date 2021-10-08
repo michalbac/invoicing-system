@@ -5,7 +5,6 @@ import pl.futurecollars.invoicing.model.Invoice
 import spock.lang.Shared
 import spock.lang.Specification
 
-
 abstract class DatabaseTestSuite extends Specification {
 
     @Shared
