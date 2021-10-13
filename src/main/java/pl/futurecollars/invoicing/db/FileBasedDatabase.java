@@ -62,7 +62,7 @@ public class FileBasedDatabase implements Database {
     @Override
     public Invoice update(Invoice updatedInvoice) {
         if (checkIfInvoiceExist(updatedInvoice.getId())) {
-            Invoice invoice = getAll().stream().filter(i -> i.getId().equals(updatedInvoice.getId())).findFirst().get();
+            Invoice invoice = getAll().stream().filter(i -> i.getId().equals(updatedInvoice.getId())).findFirst().orElseThrow();
             delete(updatedInvoice.getId());
             invoice.setPurchaser(updatedInvoice.getPurchaser());
             invoice.setVendor(updatedInvoice.getVendor());

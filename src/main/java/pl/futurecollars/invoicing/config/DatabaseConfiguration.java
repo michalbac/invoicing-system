@@ -27,8 +27,18 @@ public class DatabaseConfiguration {
     }
 
     @Bean
+    @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "file-test")
+    public Database fileBasedDatabaseTest(FileService fileService, JsonService jsonService,
+                                      @Value("${invoicing-system.database.file.test}") String path
+    ) throws IOException {
+        log.info("Creating file db for tests");
+        fileService.setPath(path);
+        return new FileBasedDatabase(fileService, jsonService);
+    }
+
+    @Bean
     @ConditionalOnProperty(name = "invoicing-system.database", havingValue = "memory")
-    public Database fileBasedDatabase() throws IOException {
+    public Database memoryBasedDatabase() throws IOException {
         log.info("Creating in memory db");
         return new InMemoryDatabase();
     }
