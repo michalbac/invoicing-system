@@ -39,7 +39,7 @@ public class InvoiceService {
             log.info("deleting invoice from db");
             database.delete(id);
         } else {
-            log.warn("Invoice not found in db");
+            log.warn("Cannot find invoice with id %s in db" + id);
             throw new InvoiceNotFoundException("Invoice with id %s does not exists in db" + id);
         }
     }
