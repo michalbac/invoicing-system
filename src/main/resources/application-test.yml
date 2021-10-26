@@ -1,0 +1,3 @@
+invoicing-system:
+  database: file-test
+  database.file.test: "src/test/resources/invoices_test.json"

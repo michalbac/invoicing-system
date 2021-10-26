@@ -4,14 +4,8 @@ import java.util.List;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import pl.futurecollars.invoicing.exceptions.InvoiceNotFoundException;
@@ -20,19 +14,16 @@ import pl.futurecollars.invoicing.service.InvoiceService;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(path = "/api")
-public class InvoiceController {
+public class InvoiceController implements InvoiceApi {
 
     private final InvoiceService invoiceService;
 
-    @GetMapping
-    @ResponseStatus(HttpStatus.OK)
+    @Override
     public List<Invoice> getAllInvoices() {
         return invoiceService.getAllInvoices();
     }
 
-    @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
+    @Override
     public Invoice addInvoice(@RequestBody Invoice invoice) {
         try {
             return invoiceService.save(invoice);
@@ -41,8 +32,7 @@ public class InvoiceController {
         }
     }
 
-    @PutMapping
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @Override
     public Invoice updateInvoice(@RequestBody Invoice invoice) {
         try {
             invoiceService.updateInvoice(invoice);
@@ -52,8 +42,7 @@ public class InvoiceController {
         }
     }
 
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
+    @Override
     public void deleteInvoice(@PathVariable UUID id) {
         try {
             invoiceService.deleteInvoice(id);
@@ -62,8 +51,7 @@ public class InvoiceController {
         }
     }
 
-    @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
+    @Override
     public Invoice getInvoice(@PathVariable UUID id) {
         try {
             return invoiceService.searchById(id);

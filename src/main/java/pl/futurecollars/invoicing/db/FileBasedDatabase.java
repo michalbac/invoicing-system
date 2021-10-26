@@ -8,25 +8,26 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.stereotype.Repository;
+import lombok.extern.slf4j.Slf4j;
 import pl.futurecollars.invoicing.model.Invoice;
 import pl.futurecollars.invoicing.utils.FileService;
 import pl.futurecollars.invoicing.utils.JsonService;
 
-@Repository
+@Slf4j
 public class FileBasedDatabase implements Database {
 
     private final FileService fileService;
     private final JsonService jsonService;
 
-    public FileBasedDatabase() {
-        this.fileService = new FileService();
-        this.jsonService = new JsonService();
+    public FileBasedDatabase(FileService fileService, JsonService jsonService) {
+        this.fileService = fileService;
+        this.jsonService = jsonService;
     }
 
     @Override
     public Invoice save(Invoice invoice) {
         if (!checkIfInvoiceExist(invoice.getId())) {
+            log.info("Saving new invoice");
             String json = jsonService.toJson(invoice);
             fileService.write(json);
         }
@@ -38,6 +39,7 @@ public class FileBasedDatabase implements Database {
     public Invoice getById(UUID id) {
         Path path = Paths.get(fileService.getPath());
         if (Files.notExists(path) || !checkIfInvoiceExist(id)) {
+            log.warn("Could not find invoice");
             throw new NoSuchElementException();
         }
         return getAll().stream().filter(invoice -> invoice.getId().equals(id)).findFirst().get();
@@ -60,7 +62,7 @@ public class FileBasedDatabase implements Database {
     @Override
     public Invoice update(Invoice updatedInvoice) {
         if (checkIfInvoiceExist(updatedInvoice.getId())) {
-            Invoice invoice = getAll().stream().filter(i -> i.getId().equals(updatedInvoice.getId())).findFirst().get();
+            Invoice invoice = getAll().stream().filter(i -> i.getId().equals(updatedInvoice.getId())).findFirst().orElseThrow();
             delete(updatedInvoice.getId());
             invoice.setPurchaser(updatedInvoice.getPurchaser());
             invoice.setVendor(updatedInvoice.getVendor());
