@@ -43,4 +43,5 @@ public class InvoiceService {
             throw new InvoiceNotFoundException("Invoice with id %s does not exists in db" + id);
         }
     }
+
 }

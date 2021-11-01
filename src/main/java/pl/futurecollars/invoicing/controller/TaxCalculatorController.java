@@ -5,12 +5,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import pl.futurecollars.invoicing.model.Calculation;
+import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.service.TaxCalculatorService;
 
 @RestController
@@ -21,12 +22,12 @@ public class TaxCalculatorController {
 
     private final TaxCalculatorService calculatorService;
 
-    @GetMapping("/{taxId}")
+    @PostMapping()
     @ResponseStatus(HttpStatus.OK)
-    @ApiOperation(value = "Get calculation for company with given tax id")
-    public ResponseEntity<Calculation> getCalculation(@PathVariable String taxId) {
+    @ApiOperation(value = "Get calculation for given company")
+    public ResponseEntity<Calculation> getCalculation(@RequestBody Company company) {
         try {
-            return ResponseEntity.ok(calculatorService.getCalculation(taxId));
+            return ResponseEntity.ok(calculatorService.getCalculation(company));
         } catch (Exception e) {
             return new ResponseEntity(null, HttpStatus.BAD_REQUEST);
         }

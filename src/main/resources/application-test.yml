@@ -1,3 +1,4 @@
 invoicing-system:
   database: file-test
   database.file.test: "src/test/resources/invoices_test.json"
+  database..cars.file.test: "src/test/resources/cars_test.json"

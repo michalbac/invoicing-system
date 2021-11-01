@@ -3,6 +3,7 @@ package pl.futurecollars.invoicing.model;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+import java.math.BigDecimal;
 import java.util.UUID;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,11 +18,18 @@ public class Company {
     private String taxId;
     @ApiModelProperty(value = "Company address", required = true, example = "ul. Prosta 1, 00-001 Warszawa")
     private String address;
+    @ApiModelProperty(value = "Health Insurance", required = true, example = "1520.00")
+    private BigDecimal healthInsurance;
+    @ApiModelProperty(value = "Pension Insurance", required = true, example = "895.50")
+    private BigDecimal pensionInsurance;
 
     @JsonCreator
-    public Company(@JsonProperty("id") UUID id, @JsonProperty("taxId") String taxId, @JsonProperty("address") String address) {
+    public Company(@JsonProperty("id") UUID id, @JsonProperty("taxId") String taxId, @JsonProperty("address") String address,
+                   @JsonProperty("healthInsurance") BigDecimal healthInsurance, @JsonProperty("pensionInsurance") BigDecimal pensionInsurance) {
         this.id = id;
         this.taxId = taxId;
         this.address = address;
+        this.healthInsurance = healthInsurance;
+        this.pensionInsurance = pensionInsurance;
     }
 }

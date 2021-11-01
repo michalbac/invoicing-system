@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import java.io.IOException;
 import org.springframework.stereotype.Service;
+import pl.futurecollars.invoicing.model.Company;
 import pl.futurecollars.invoicing.model.Invoice;
 
 @Service
@@ -22,9 +23,18 @@ public class JsonService {
         return mapper.readValue(json.getBytes(), Invoice.class);
     }
 
-    public String toJson(Invoice invoice) {
+    public String invoiceToJson(Invoice invoice) {
         try {
             return mapper.writeValueAsString(invoice);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public String companyToJson(Company company) {
+        try {
+            return mapper.writeValueAsString(company);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;

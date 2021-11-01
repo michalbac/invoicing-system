@@ -44,7 +44,7 @@ class InvoiceControllerTest extends Specification {
     }
 
     def "add one invoice"() {
-        String contentAsJson = jsonService.toJson(TestHelpers.invoice1);
+        String contentAsJson = jsonService.invoiceToJson(TestHelpers.invoice1);
         when:
         def response = mockMvc.perform(post("/api").content(contentAsJson).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
@@ -58,11 +58,11 @@ class InvoiceControllerTest extends Specification {
 
     def "update existing invoice"() {
         when:
-        String contentAsJson = jsonService.toJson(TestHelpers.invoice1);
+        String contentAsJson = jsonService.invoiceToJson(TestHelpers.invoice1);
         mockMvc.perform(post("/api").content(contentAsJson).contentType(MediaType.APPLICATION_JSON))
         Invoice updatedInvoice = TestHelpers.invoice1
         updatedInvoice.setDate(new LocalDate(2021, 9, 15))
-        String updatedContentAsJson = jsonService.toJson(updatedInvoice)
+        String updatedContentAsJson = jsonService.invoiceToJson(updatedInvoice)
 
         then:
         mockMvc.perform(put("/api/").content(updatedContentAsJson)
@@ -79,8 +79,8 @@ class InvoiceControllerTest extends Specification {
 
     def "delete one invoice"() {
         when:
-        String contentAsJson1 = jsonService.toJson(TestHelpers.invoice1);
-        String contentAsJson2 = jsonService.toJson(TestHelpers.invoice2);
+        String contentAsJson1 = jsonService.invoiceToJson(TestHelpers.invoice1);
+        String contentAsJson2 = jsonService.invoiceToJson(TestHelpers.invoice2);
         mockMvc.perform(post("/api").content(contentAsJson1).contentType(MediaType.APPLICATION_JSON))
         mockMvc.perform(post("/api").content(contentAsJson2).contentType(MediaType.APPLICATION_JSON))
 
@@ -95,7 +95,7 @@ class InvoiceControllerTest extends Specification {
 
     def "get existing invoice"() {
         when:
-        String contentAsJson = jsonService.toJson(TestHelpers.invoice1);
+        String contentAsJson = jsonService.invoiceToJson(TestHelpers.invoice1);
         mockMvc.perform(post("/api").content(contentAsJson).contentType(MediaType.APPLICATION_JSON))
 
         then:
@@ -105,7 +105,7 @@ class InvoiceControllerTest extends Specification {
                 .andExpect(status().isOk())
     }
 
-    def "get not exisiting invoice"() {
+    def "get not existing invoice"() {
         expect:
         mockMvc.perform(get("/api/" + UUID.randomUUID()))
                 .andExpect(status().isNotFound())

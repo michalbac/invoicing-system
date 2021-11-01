@@ -23,4 +23,16 @@ public class Calculation {
     private BigDecimal earnings;
     @JsonProperty
     private BigDecimal payableVat;
+    @JsonProperty
+    private BigDecimal pensionInsurance;
+    @JsonProperty
+    private BigDecimal taxBase;
+    @JsonProperty
+    private BigDecimal incomeTax;
+    @JsonProperty
+    private BigDecimal healthInsurance9;
+    @JsonProperty
+    private BigDecimal healthInsurance775;
+    @JsonProperty
+    private BigDecimal citToBePaid;
 }

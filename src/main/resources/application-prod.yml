@@ -1,3 +1,4 @@
 invoicing-system:
   database: file
   database.file: "src/main/resources/invoices.json"
+  database.car.file: "src/main/resources/cars.json"

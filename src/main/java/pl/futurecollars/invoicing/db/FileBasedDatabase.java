@@ -28,7 +28,7 @@ public class FileBasedDatabase implements Database {
     public Invoice save(Invoice invoice) {
         if (!checkIfInvoiceExist(invoice.getId())) {
             log.info("Saving new invoice");
-            String json = jsonService.toJson(invoice);
+            String json = jsonService.invoiceToJson(invoice);
             fileService.write(json);
         }
         return invoice;
